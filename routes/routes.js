@@ -60,15 +60,14 @@ router.patch('/:id', async (req,res) => {
 })
 
 //Delete Users
-router.delete('/:id', (req, res) => {
-    Users.findByIdAndRemove(req.params.id, (err,data) => {
-        if (!err) {
-            res.status(200).json({ code:200, message: 'User delete Success',
-            deleteUser:data });
-        } else {
-            console.log(err);
-        }
-    });
+router.delete('/:id', async (req, res) => {
+    try{
+        const usr = await Users.findByIdAndRemove(req.params.id);
+        res.status(200).json({ code:200, message: 'User delete Success',
+            deleteUser:usr });
+    } catch(err) {
+        res.json(err);
+    }
 });
 
 module.exports = router;
